@@ -1,0 +1,10 @@
+import Aux from "./../../hoc/Auxx";
+import classes from "./Layout";
+const layout = (props) => (
+  <Aux>
+    <div>Toolbar, SideDrawer, Backdrop</div>
+    <main className={classes.Content}>{props.children}</main>
+  </Aux>
+);
+
+export default layout;
