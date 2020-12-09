@@ -1,5 +1,6 @@
 import Aux from "./../../hoc/Auxx";
-import classes from "./Layout";
+import classes from "./Layout.module.css";
+
 const layout = (props) => (
   <Aux>
     <div>Toolbar, SideDrawer, Backdrop</div>
