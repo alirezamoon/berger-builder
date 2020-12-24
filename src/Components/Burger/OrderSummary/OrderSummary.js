@@ -1,6 +1,5 @@
 import React from 'react'
 import Aux from './../../../hoc/Auxx'
-import classes from './OrderSummary.module.css'
 import Button from '../../UI/Button/Button'
 
 const orderSummary = (props) => {
