@@ -8,12 +8,17 @@ import Aux from './../../../hoc/Auxx'
 import classes from './SideDrawer.module.css'
 
 
-const sideDrawer = () => {
-    //...
+const sideDrawer = (props) => {
+    let attachedClasses = [classes.SideDrawer, classes.Close]
+    if (props.open) {
+        attachedClasses = [classes.SideDrawer, classes.Open]
+    } else {
+        attachedClasses = [classes.SideDrawer, classes.Close]
+    }
     return (
         <Aux>
-            <Backdrop show/>
-            <div className={classes.SideDrawer}>
+            <Backdrop show={props.open} hide={props.closed} />
+            <div className={attachedClasses.join(' ')}>
                 <div className={classes.Logo}>
                     <Logo />
                 </div>
