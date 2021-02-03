@@ -17,7 +17,13 @@ class ContactData extends React.Component {
                 type: type,
                 placeholder: placeholder
             },
-            value: value
+            value: value,
+            validation: {
+                required: true,
+                minLength: 5,
+                maxLength: 5,
+            },
+            valid: false
         }
     }
 
@@ -29,7 +35,13 @@ class ContactData extends React.Component {
                     type: 'text',
                     placeholder: 'Your Name'
                 },
-                value: ''
+                value: '',
+                validation: {
+                    required: true,
+                    minLength: 5,
+                    maxLength: 9,
+                },
+                valid: false
             },
             street: this.element('input', 'text', 'Street', ''),
             zipCode: this.element('input', 'text', 'ZIP Code', ''),
@@ -74,9 +86,27 @@ class ContactData extends React.Component {
         const updatedOrderForm = { ...this.state.orderForm }
         const updatedFormElement = { ...updatedOrderForm[inputIdentifier] }
         updatedFormElement.value = event.target.value
+        updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
+        console.log(updatedFormElement)
         updatedOrderForm[inputIdentifier] = updatedFormElement
 
         this.setState({ orderForm: updatedOrderForm })
+    }
+
+    checkValidity = (value, rules) => {
+        let isValid = true
+
+        if (rules.required) {
+            isValid = value.trim() !== '' && isValid
+        }
+        if (rules.minLength) {
+            isValid = value.length >= rules.minLength && isValid
+        }
+        if (rules.maxLength) {
+            isValid = value.length <= rules.maxLength && isValid
+        }
+
+        return isValid
     }
 
     render() {
