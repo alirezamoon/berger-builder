@@ -57,10 +57,13 @@ class ContactData extends React.Component {
                         { value: 'cheapest', displayValue: 'Cheapest' }
                     ]
                 },
-                value: 'fastest'
+                value: 'fastest',
+                valid: true,
+                validation: {}
             }
         },
-        loading: false
+        loading: false,
+        formIsValid: false
     }
     orderHandler = (event) => {
         event.preventDefault()
@@ -90,23 +93,27 @@ class ContactData extends React.Component {
         updatedFormElement.value = event.target.value
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
         updatedFormElement.touched = true
-        // console.log(updatedFormElement)
         updatedOrderForm[inputIdentifier] = updatedFormElement
 
-        this.setState({ orderForm: updatedOrderForm })
+        let formIsValid = true
+        for (let key in updatedOrderForm) {
+            formIsValid = updatedOrderForm[key].valid && formIsValid
+        }
+
+        this.setState({ orderForm: updatedOrderForm, formIsValid: formIsValid })
     }
 
     checkValidity = (value, rules) => {
         let isValid = true
 
         if (rules.required) {
-            isValid = value.trim() !== '' && isValid
+            isValid = (value.trim() !== '') && isValid
         }
         if (rules.minLength) {
-            isValid = value.length >= rules.minLength && isValid
+            isValid = (value.length >= rules.minLength) && isValid
         }
         if (rules.maxLength) {
-            isValid = value.length <= rules.maxLength && isValid
+            isValid = (value.length <= rules.maxLength) && isValid
         }
 
         return isValid
@@ -137,7 +144,7 @@ class ContactData extends React.Component {
                         touched={formElement.config.touched}
                         changed={(e) => this.inputChangeHandler(e, formElement.id)} />
                 ))}
-                <Button btnType='Success'>ORDER</Button>
+                <Button btnType='Success' disabled={!this.state.formIsValid}>ORDER</Button>
             </form>)
         if (this.state.loading) {
             form = <Spinner />
