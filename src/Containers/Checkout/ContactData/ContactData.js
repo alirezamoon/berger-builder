@@ -21,9 +21,10 @@ class ContactData extends React.Component {
             validation: {
                 required: true,
                 minLength: 5,
-                maxLength: 5,
+                maxLength: 9,
             },
-            valid: false
+            valid: false,
+            touched: false
         }
     }
 
@@ -41,7 +42,8 @@ class ContactData extends React.Component {
                     minLength: 5,
                     maxLength: 9,
                 },
-                valid: false
+                valid: false,
+                touched: false
             },
             street: this.element('input', 'text', 'Street', ''),
             zipCode: this.element('input', 'text', 'ZIP Code', ''),
@@ -62,7 +64,7 @@ class ContactData extends React.Component {
     }
     orderHandler = (event) => {
         event.preventDefault()
-        console.log(this.props)
+        // console.log(this.props)
         const formData = {}
         for (let formElementIdentifier in this.state.orderForm) {
             formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value
@@ -87,7 +89,8 @@ class ContactData extends React.Component {
         const updatedFormElement = { ...updatedOrderForm[inputIdentifier] }
         updatedFormElement.value = event.target.value
         updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation)
-        console.log(updatedFormElement)
+        updatedFormElement.touched = true
+        // console.log(updatedFormElement)
         updatedOrderForm[inputIdentifier] = updatedFormElement
 
         this.setState({ orderForm: updatedOrderForm })
@@ -129,6 +132,9 @@ class ContactData extends React.Component {
                         elementType={formElement.config.elementType}
                         elementConfig={formElement.config.elementConfig}
                         value={formElement.config.value}
+                        invalid={!formElement.config.valid}
+                        shouldValidate={formElement.config.validation}
+                        touched={formElement.config.touched}
                         changed={(e) => this.inputChangeHandler(e, formElement.id)} />
                 ))}
                 <Button btnType='Success'>ORDER</Button>
